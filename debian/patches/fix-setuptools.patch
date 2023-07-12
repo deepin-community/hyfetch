@@ -1,0 +1,23 @@
+Description: Fix find_namespace_packages include in setup.py
+ HyFetch introduces uses find_namespace_packages in setup.py to detect
+ packages, causing "tools/" directory also included in whl file and filesystem.
+ 
+ This patch let setuptools to include "hyfetch/" directory only.
+Author: Tianyu Chen <sweetyfish@deepin.org>
+Bug: https://github.com/hykilpikonna/hyfetch/issues/149
+Bug-Deepin: https://github.com/deepin-community/hyfetch/pull/1#issuecomment-1630095160
+Forwarded: https://github.com/hykilpikonna/hyfetch/issues/149#issuecomment-1630214274
+Last-Update: 2023-07-11
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/setup.py
++++ b/setup.py
+@@ -31,7 +31,7 @@
+         "Programming Language :: Python :: 3.10",
+         "Programming Language :: Python :: 3.11",
+     ],
+-    packages=find_namespace_packages(),
++    packages=find_namespace_packages(include=['hyfetch', 'hyfetch.*']),
+     package_data={'hyfetch': ['hyfetch/*']},
+     include_package_data=True,
+     install_requires=[
